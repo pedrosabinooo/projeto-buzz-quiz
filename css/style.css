@@ -1,7 +1,14 @@
 *{
     font-family: 'Roboto', sans-serif;
-    box-sizing: border-box;}
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    justify-content: center;
+    background-color: #FAFAFA;
+}
 header{
+    font-family: 'Roboto', sans-serif;
     height: 69px;
     background-color: #EC362D;
     display: flex;
@@ -65,4 +72,7 @@ section h1{
 .todos-os-quizzes ion-icon{
     font-size: 31px;
     color: #EC362D ;
+}
+.hidden{
+    display: none;
 }
