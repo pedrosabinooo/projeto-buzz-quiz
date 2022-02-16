@@ -18,7 +18,7 @@
     <header>
         <h1>BuzzQuizz</h1>
     </header>
-    <main class="hidden">
+    <main>
         <section class="criar-quizz">
             <div class="box-quizz">
                 <p>Você não criou nenhum quizz ainda :(</p>
@@ -34,13 +34,15 @@
         </section>
 
         <section class="todos-os-quizzes">
-            <span>
-                <h1>Todos os Quizzes</h1>
-                <ion-icon name="add-circle"></ion-icon>
-            </span>
+            <span><h1>Todos os Quizzes</h1><ion-icon name="add-circle"></ion-icon></span>
+            <div class="conteudo"></div>
+        </section>
+
+        <section class="tela2 escondido">
+
         </section>
     </main>
-    <div class="criacao-de-quiz">
+    <div class="criacao-de-quiz escondido">
         <section class="info-basica">
             <span>
                 <h1>Comece pelo começo</h1>
@@ -53,7 +55,7 @@
             </div>
             <button>Prosseguir para criar perguntas</button>
         </section>
-        <section class="criacao-perguntas hidden">
+        <section class="criacao-perguntas">
             <span>
                 <h1>Crie suas perguntas</h1>
             </span>
@@ -89,6 +91,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script type="text/javascript" src="./javascript/script.js"></script>
+    
 </body>
 
 </html>
