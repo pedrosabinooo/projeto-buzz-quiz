@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/criacao-de-quizz.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
         <section class="criar-quizz">
             <div class="box-quizz">
                 <p>Você não criou nenhum quizz ainda :(</p>
-                <button>
+                <button onclick="criarInfoBasicaQuizz()">
                     <h3>Criar Quizz</h3>
                 </button>
             </div>
@@ -53,37 +53,129 @@
                 <input type="text" placeholder="Quantidade de perguntas do quizz">
                 <input type="text" placeholder="Quantidade de níveis do quizz">
             </div>
-            <button>Prosseguir para criar perguntas</button>
+            <button onclick="criarPerguntasQuizz()">Prosseguir para criar perguntas</button>
         </section>
-        <section class="criacao-perguntas">
+        <section class="criacao-perguntas escondido">
             <span>
                 <h1>Crie suas perguntas</h1>
             </span>
             <div class="inputs">
-                <article class="pergunta">
-                    <span>
-                        <h1>Pergunta 1</h1>
-                    </span>
-                    <input type="text" placeholder="Texto da pergunta">
-                    <input type="text" placeholder="Cor de fundo da pergunta">
-                    <span>
-                        <h1>Resposta correta</h1>
-                    </span>
-                    <input type="text" placeholder="Resposta correta">
-                    <input type="text" placeholder="URL da imagem">
-                    <span>
-                        <h1>Respostas incorretas</h1>
-                    </span>
-                    <input type="text" placeholder="Resposta incorreta 1">
-                    <input type="text" placeholder="URL da imagem 1">
-                    <input type="text" placeholder="Resposta incorreta 2">
-                    <input type="text" placeholder="URL da imagem 2">
-                    <input type="text" placeholder="Resposta incorreta 3">
-                    <input type="text" placeholder="URL da imagem 3">
+                <article>
+                    <div>
+                        <span><h2>Pergunta 1</h2></span>
+                        <img class="escondido" onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta">
+                    </div>
+                    <div class="pergunta-selecionada">
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <span>
+                            <h2>Resposta correta</h2>
+                        </span>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <span>
+                            <h2>Respostas incorretas</h2>
+                        </span>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
                 </article>
-                
+                <article>
+                    <div>
+                        <span><h2>Pergunta 2</h2></span>
+                        <img onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta">
+                    </div>
+                    <div class="escondido">
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <span>
+                            <h2>Resposta correta</h2>
+                        </span>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <span>
+                            <h2>Respostas incorretas</h2>
+                        </span>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
+                </article>
+                <article>
+                    <div>
+                        <span><h2>Pergunta 3</h2></span>
+                        <img onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta">
+                    </div>
+                    <div class="escondido">
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <span>
+                            <h2>Resposta correta</h2>
+                        </span>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <span>
+                            <h2>Respostas incorretas</h2>
+                        </span>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
+                </article>
             </div>
-            <button>Prosseguir para criar níveis</button>
+            <button onclick="criarNiveisQuizz()">Prosseguir para criar níveis</button>
+        </section>
+        <section class="criacao-niveis escondido">
+            <span>
+                <h1>Agora, decida os níveis!</h1>
+            </span>
+            <div class="inputs">
+                <article>
+                    <div>
+                        <span><h2>Nível 1</h2></span>
+                        <img class="escondido" onclick="editarNivel(this)" src="./media/edit.svg" alt="Editar nível">
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Título do nível">
+                        <input type="text" placeholder="% de acerto mínima">
+                        <input type="text" placeholder="URL da imagem do nível">
+                        <textarea name="descrição" placeholder="Descrição do nível"></textarea>
+                    </div>
+                </article>
+                <article>
+                    <div>
+                        <span><h2>Nível 2</h2></span>
+                        <img onclick="editarNivel(this)" src="./media/edit.svg" alt="Editar nível">
+                    </div>
+                    <div class="escondido">
+                        <input type="text" placeholder="Título do nível">
+                        <input type="text" placeholder="% de acerto mínima">
+                        <input type="text" placeholder="URL da imagem do nível">
+                        <textarea name="descrição" placeholder="Descrição do nível"></textarea>
+                    </div>
+                </article>
+            </div>
+            <button onclick="finalizarQuizz()">Finalizar Quizz</button>
+        </section>
+        <section class="finalizar-criacao-quiz escondido">
+            <span>
+                <h1>Seu quiz está pronto!</h1>
+            </span>
+            <span>Colocar imagem do Quizz aqui!</span>
+            <button onclick="acessarQuizz()">Acessar Quizz</button>
+            <span onclick="voltarParaAHome()">
+                <h3>Voltar pra home</h3>
+            </span>
         </section>
     </div>
 

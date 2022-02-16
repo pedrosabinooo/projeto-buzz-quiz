@@ -39,3 +39,57 @@ function tela2(quizzSelecionado){
         }
     }
 }
+
+function criarInfoBasicaQuizz() {
+    document.querySelector("main").classList.add("escondido");
+    document.querySelector(".criacao-de-quiz").classList.remove("escondido");
+}
+
+function criarPerguntasQuizz() {
+    document.querySelector(".info-basica").classList.add("escondido");
+    document.querySelector(".criacao-perguntas").classList.remove("escondido");
+    renderizarCriacaoPerguntas(document.querySelector(".info-basica"));
+    // Adicionar validação dos inputs
+}
+
+function renderizarCriacaoPerguntas() {
+
+}
+
+function criarNiveisQuizz() {
+    document.querySelector(".criacao-perguntas").classList.add("escondido");
+    document.querySelector(".criacao-niveis").classList.remove("escondido");
+    // Adicionar validação dos inputs
+}
+
+function finalizarQuizz() {
+    document.querySelector(".criacao-niveis").classList.add("escondido");
+    document.querySelector(".finalizar-criacao-quiz").classList.remove("escondido");
+}
+
+function editarPergunta(novaPerguntaSelecionada) {
+    novaPerguntaSelecionada.parentNode.parentNode.querySelector("div:last-child").classList.add("pergunta-selecionada pergunta-atual")
+    document.querySelectorAll(".criacao-perguntas article>div:last-child").forEach((elemento) => {
+        if (elemento.classList.contains("pergunta-selecionada") && !elemento.classList.contains("pergunta-atual")) {
+            elemento.classList.toggle("escondido");
+            elemento.parentNode.querySelector("img").classList.toggle("escondido");
+        }
+    })
+}
+
+function editarNivel(novoNivelSelecionado) {
+    novoNivelSelecionado.parentNode.parentNode.querySelector("div:last-child").classList.add("nivel-selecionado nivel-atual")
+    document.querySelectorAll(".criacao-niveis article>div:last-child").forEach((elemento) => {
+        if (elemento.classList.contains("nivel-selecionado") && !elemento.classList.contains("nivel-atual")) {
+            elemento.classList.toggle("escondido");
+            elemento.parentNode.querySelector("img").classList.toggle("escondido");
+        }
+    })
+}
+
+function voltarParaAHome() {
+    document.querySelector(".criacao-de-quiz").classList.add("escondido");
+    document.querySelector("main").classList.remove("escondido");
+    document.querySelector(".finalizar-criacao-quiz").classList.add("escondido");
+    document.querySelector(".info-basica").classList.remove("escondido");
+}
