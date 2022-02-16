@@ -52,7 +52,6 @@ function tela2(quizzSelecionado){
 function selecionarResposta(selecao){
     let htmlArray=selecao.parentNode.children;
     let acerto=selecao.getAttribute('data-id');
-    console.log(htmlArray);
     if(acerto==="true" || acerto==="false"){
         if(acerto==="true"){
         acertos += 1;
