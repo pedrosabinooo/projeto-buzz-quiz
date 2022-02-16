@@ -1,4 +1,5 @@
 let quizzes;
+let acertos=0;
 const todosOsQuizzes=document.querySelector(".todos-os-quizzes .conteudo")
 const quizPromise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
 quizPromise.then(renderizarTodosOsQuizzes);
@@ -16,10 +17,18 @@ function renderizarTodosOsQuizzes(response){
 };
 
 function tela2(quizzSelecionado){
+    document.querySelector(".criar-quizz").classList.add("escondido");
+    document.querySelector(".seus-quizzes").classList.add("escondido");
+    document.querySelector(".todos-os-quizzes").classList.add("escondido");
     let tela2 = document.querySelector('.tela2')
     let selecionado = quizzSelecionado.id
     numeroDoQuizz = selecionado.replace('quizz','')
     tela2.classList.toggle('escondido');
+    tela2.innerHTML=
+    `<div class="quizz-banner">
+        <img src="${quizzes[numeroDoQuizz].image}"/>
+        <h2>${quizzes[numeroDoQuizz].title}</h2>
+    <div>`;
     for (let i=0;i<quizzes[numeroDoQuizz].questions.length;i++){
         tela2.innerHTML+=
         `<div class="pergunta" id="pergunta${i}">
@@ -30,13 +39,38 @@ function tela2(quizzSelecionado){
 
         for (let j=0;j<quizzes[numeroDoQuizz].questions[i].answers.length;j++){
             document.querySelector(`#conteudo${i}`).innerHTML+=
-            `<div class="perguntas">
-                <img src="${quizzes[numeroDoQuizz].questions[i].answers[j].image}" id="${quizzes[numeroDoQuizz].questions[i].answers[j].isCorrectAnswer}"/>
+            `<div class="perguntas" style="order: ${Math.floor(Math.random() * 11)}" onclick="selecionarResposta(this)" data-id="${quizzes[numeroDoQuizz].questions[i].answers[j].isCorrectAnswer}">
+                <img src="${quizzes[numeroDoQuizz].questions[i].answers[j].image}"/>
                 <p>
                 ${quizzes[numeroDoQuizz].questions[i].answers[j].text}
                 </p>
             </div>`;
         }
+    }
+}
+
+function selecionarResposta(selecao){
+    let htmlArray=selecao.parentNode.children;
+    let acerto=selecao.getAttribute('data-id');
+    console.log(htmlArray);
+    if(acerto==="true" || acerto==="false"){
+        if(acerto==="true"){
+        acertos += 1;
+    }
+    for (let i=0;i<htmlArray.length;i++){
+        marcarResposta(htmlArray[i]);
+    }}
+    setTimeout(()=>{window.scrollBy(0, 100);},2000)
+}
+function marcarResposta(selecao){
+    let acerto=selecao.getAttribute('data-id')
+    if(acerto==='true'){
+        selecao.style.color= "green";
+        selecao.setAttribute('data-id','clicked');
+    }else{
+        selecao.style.filter="opacity(50%)"
+        selecao.style.color="red"
+        selecao.setAttribute('data-id','clicked'); 
     }
 }
 
