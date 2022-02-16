@@ -56,15 +56,19 @@ function selecionarResposta(selecao){
     if(acerto==="true" || acerto==="false"){
         if(acerto==="true"){
         acertos += 1;
+        selecao.style.filter="opacity(100%)";
     }
     for (let i=0;i<htmlArray.length;i++){
         marcarResposta(htmlArray[i]);
-    }}
-    setTimeout(()=>{window.scrollBy(0, 100);},2000)
+    }
+    selecao.style.filter="opacity(100%)";
+    }
+    setTimeout(()=>{window.scrollBy(0, 300)},2000)
 }
 function marcarResposta(selecao){
     let acerto=selecao.getAttribute('data-id')
     if(acerto==='true'){
+        selecao.style.filter="opacity(50%)"
         selecao.style.color= "green";
         selecao.setAttribute('data-id','clicked');
     }else{
