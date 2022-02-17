@@ -39,6 +39,8 @@ header h1{
 main{
     background-color: #FAFAFA;
     margin: 100px 18px auto 18px;
+    display: block;
+    justify-content: center;
 }
 section h1{
     font-size: 20px;
@@ -114,10 +116,12 @@ section h1{
 
 .tela2{
     z-index: 1;
-    position: fixed;
+    position: absolute;
+    width: 100%;
+    display: block;
+    justify-content: center;
+    margin: 80px auto;
     top: 0;
-    bottom: 0;
-    right: 0;
     left: 0;
     background-color: #FFFFFF;
 }
@@ -126,9 +130,8 @@ section h1{
     display: block;
 }
 .pergunta span{
-    margin: 80px 18px auto 18px;
-    background-color:#A0438D;
-    width: auto;
+    margin: auto auto;
+    width: 100%;
     min-height: 80px;
     display: flex;
     justify-content: center;

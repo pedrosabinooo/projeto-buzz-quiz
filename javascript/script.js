@@ -31,7 +31,7 @@ function tela2(quizzSelecionado) {
     <div>`;
     for (let i = 0; i < quizzes[numeroDoQuizz].questions.length; i++) {
         tela2.innerHTML +=
-            `<div class="pergunta" id="pergunta${i}">
+            `<div class="pergunta" id="pergunta${i}" style="background-color: ${quizzes[numeroDoQuizz].questions[i].color}">
             <span><h3>${quizzes[numeroDoQuizz].questions[i].title}</h3></span>
         </div>
         <div class="conteudo" id="conteudo${i}"> 
@@ -62,7 +62,10 @@ function selecionarResposta(selecao){
     }
     selecao.style.filter="opacity(100%)";
     }
-    setTimeout(()=>{window.scrollBy(0, 300)},2000)
+    setTimeout(()=>{window.scrollBy({
+        top: 300,
+        behavior : "smooth"
+    })},2000)
 }
 function marcarResposta(selecao){
     let acerto=selecao.getAttribute('data-id')
