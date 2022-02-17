@@ -77,3 +77,8 @@
     font-weight: normal;
     font-size: 18px;
 }
+
+.finalizar-criacao-quiz {
+    display: flex;
+    flex-direction: column;
+}
