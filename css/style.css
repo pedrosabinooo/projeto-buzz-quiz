@@ -78,8 +78,13 @@ section h1{
 .conteudo{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    width: 80%;
+    margin: auto;
+    justify-content: space-around;
     align-items: center;
+}
+.resultado img{
+    max-width: 360px;
 }
 .todos-os-quizzes span{
     font-size: 20px;
@@ -128,6 +133,7 @@ section h1{
 ::-webkit-scrollbar{display: none;}
 .pergunta{
     display: block;
+    margin: 60px 10% auto 10%;
 }
 .pergunta span{
     margin: auto auto;
