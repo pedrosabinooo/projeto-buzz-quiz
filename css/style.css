@@ -170,3 +170,32 @@ section h1{
     font-size: 35px;
     font-weight: 400;
 }
+
+.quizzFinalizado{
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.quizzFinalizado button{
+    margin: 15px;
+    width: fit-content;
+    padding: 15px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: #EC362D;
+    border: none;
+}
+.quizzFinalizado p{
+    margin: auto 35px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #FFFFFF;
+}
+.quizzFinalizado h4{
+    font-size: 20px;
+    font-weight: 400;
+    color: #818181;
+    margin-bottom: 60px;
+}

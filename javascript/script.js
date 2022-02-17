@@ -1,5 +1,8 @@
 let quizzes;
+let quizzAtual;
 let acertos = 0;
+let tentativas=0;
+const tela2 = document.querySelector('.tela2');
 const todosOsQuizzes = document.querySelector(".todos-os-quizzes .conteudo")
 const quizPromise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
 quizPromise.then(renderizarTodosOsQuizzes);
@@ -8,7 +11,7 @@ function renderizarTodosOsQuizzes(response) {
     quizzes = response.data
     for (let i = 0; i < quizzes.length; i++) {
         todosOsQuizzes.innerHTML +=
-            `<div class="quizz" id="quizz${i}" onclick="tela2(this)">
+            `<div class="quizz" id="quizz${i}" onclick="mostrarTela2(this)">
             <h2>${quizzes[i].title}</h2>
         </div>`;
 
@@ -16,14 +19,12 @@ function renderizarTodosOsQuizzes(response) {
     }
 };
 
-function tela2(quizzSelecionado) {
-    document.querySelector(".criar-quizz").classList.add("escondido");
-    document.querySelector(".seus-quizzes").classList.add("escondido");
-    document.querySelector(".todos-os-quizzes").classList.add("escondido");
-    let tela2 = document.querySelector('.tela2')
-    let selecionado = quizzSelecionado.id
-    numeroDoQuizz = selecionado.replace('quizz', '')
-    tela2.classList.toggle('escondido');
+function mostrarTela2(quizzSelecionado) {
+    quizzAtual=quizzSelecionado
+    let selecionado = quizzSelecionado.id;
+    numeroDoQuizz = selecionado.replace('quizz', '');
+    document.querySelector('.responder-quizz').classList.remove('escondido');
+    document.querySelector('main').classList.add('escondido');
     tela2.innerHTML =
         `<div class="quizz-banner">
         <img src="${quizzes[numeroDoQuizz].image}"/>
@@ -47,6 +48,7 @@ function tela2(quizzSelecionado) {
             </div>`;
         }
     }
+    tela2.innerHTML +="<div class='resultado'></div>";
 }
 
 function selecionarResposta(selecao){
@@ -61,11 +63,13 @@ function selecionarResposta(selecao){
         marcarResposta(htmlArray[i]);
     }
     selecao.style.filter="opacity(100%)";
-    }
+    tentativas += 1;
     setTimeout(()=>{window.scrollBy({
         top: 300,
         behavior : "smooth"
     })},2000)
+    setTimeout(resultadoDoQuizz,2000);
+    } 
 }
 function marcarResposta(selecao){
     let acerto=selecao.getAttribute('data-id')
@@ -78,6 +82,46 @@ function marcarResposta(selecao){
         selecao.style.color="red"
         selecao.setAttribute('data-id','clicked'); 
     }
+}
+
+function resultadoDoQuizz(){
+    let tela2Resultado=document.querySelector('.tela2 .resultado')
+    if(tentativas===quizzes[numeroDoQuizz].questions.length){
+
+        let percentagem = Math.round((acertos/tentativas)*100);
+        let indiceN;
+        for (let i=0; i < quizzes[numeroDoQuizz].levels.length; i++){
+            if(quizzes[numeroDoQuizz].levels[i].minValue <= percentagem){
+                indiceN=i
+            }
+        }
+
+        tela2Resultado.innerHTML +=
+        `<div class="pergunta" id="resultadoQuizz" style="background-color: red">
+            <span><h3>${percentagem}% de acerto: ${quizzes[numeroDoQuizz].levels[indiceN].title}</h3></span>
+        </div>
+        <div class="conteudo" id="conteudoResultado">
+            <img src="${quizzes[numeroDoQuizz].levels[indiceN].image}"/>
+            <p>${quizzes[numeroDoQuizz].levels[indiceN].text}</p> 
+        </div>
+        <div class="quizzFinalizado">
+            <button id="reiniciarQuizz" onclick="reiniciarQuizz()"><p>Reiniciar quizz</p></button>
+            <h4 onclick="voltarParaAHome()">Voltar pra home</h4>
+        </div>`
+        ;
+
+        setTimeout(()=>{window.scrollBy({
+            top: 10000,
+            behavior : "smooth"
+        })},500)
+    }
+}
+
+function reiniciarQuizz() {
+    acertos=0;
+    tentativas=0;
+    window.scrollTo(0, 0);
+    mostrarTela2(quizzAtual);
 }
 
 let meuQuizz;
@@ -285,8 +329,11 @@ function editarNivel(novoNivelSelecionado) {
 }
 
 function voltarParaAHome() {
+    document.querySelector(".responder-quizz").classList.add("escondido");
     document.querySelector(".criacao-de-quiz").classList.add("escondido");
     document.querySelector("main").classList.remove("escondido");
     document.querySelector(".finalizar-criacao-quiz").classList.add("escondido");
     document.querySelector(".info-basica").classList.remove("escondido");
+    acertos=0;
+    tentativas=0;
 }
