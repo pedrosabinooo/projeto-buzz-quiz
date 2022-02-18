@@ -1,3 +1,4 @@
+let meusQuizzes = [];
 let quizzes;
 let quizzAtual;
 let acertos = 0;
@@ -71,6 +72,7 @@ function selecionarResposta(selecao){
     setTimeout(resultadoDoQuizz,2000);
     } 
 }
+
 function marcarResposta(selecao){
     let acerto=selecao.getAttribute('data-id')
     if(acerto==='true'){
@@ -124,7 +126,23 @@ function reiniciarQuizz() {
     mostrarTela2(quizzAtual);
 }
 
-let meuQuizz;
+let meuQuizz = {
+	title: "Título do quizz",
+	image: "https://http.cat/411.jpg",
+	questions: [],
+	levels: []
+}
+let minhaPergunta = {
+    title: "Título da pergunta 1",
+    color: "#123456",
+    answers: []
+}
+let meuNivel = {
+    title: "Título do nível 1",
+    image: "https://http.cat/411.jpg",
+    text: "Descrição do nível 1",
+    minValue: 0
+}
 function criarInfoBasicaQuizz() {
     document.querySelector("main").classList.add("escondido");
     document.querySelector(".criacao-de-quiz").classList.remove("escondido");
@@ -148,30 +166,26 @@ function renderizarCriacaoPerguntas() {
     for (let i = 0; i < qtdPerguntas; i++) {
         perguntasHTML.innerHTML += `
         <article>
-        <div>
-        <span><h2>Pergunta ${i + 1}</h2></span>
-        <img onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta">
-        </div>
-                <div class="escondido">
+            <div>
+                <span><h2>Pergunta ${i + 1}</h2></span>
+                <img onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta">
+            </div>
+            <div class="escondido">
                 <input id="textoPergunta${i + 1}" type="text" placeholder="Texto da pergunta">
-                    <input id="corPergunta${i + 1}" type="text" placeholder="Cor de fundo da pergunta">
-                    <span>
-                        <h2>Resposta correta</h2>
-                    </span>
-                    <input id="respostaCorreta${i + 1}" type="text" placeholder="Resposta correta">
-                    <input id="urlRespostaCorreta${i + 1}" type="text" placeholder="URL da imagem">
-                    <span>
-                        <h2>Respostas incorretas</h2>
-                    </span>
-                    <input id="respostaIncorreta1${i + 1}" type="text" placeholder="Resposta incorreta 1">
-                    <input id="urlRespostaIncorreta1${i + 1}" type="text" placeholder="URL da imagem 1">
-                    <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 2">
-                    <input id="urlRespostaIncorreta2${i + 1}" type="text" placeholder="URL da imagem 2">
-                    <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 3">
-                    <input id="urlRespostaIncorreta3${i + 1}" type="text" placeholder="URL da imagem 3">
-                    </div>
-                    </article>
-                    `;
+                <input id="corPergunta${i + 1}" type="text" placeholder="Cor de fundo da pergunta">
+                <span><h2>Resposta correta</h2></span>
+                <input id="respostaCorreta${i + 1}" type="text" placeholder="Resposta correta">
+                <input id="urlRespostaCorreta${i + 1}" type="text" placeholder="URL da imagem">
+                <span><h2>Respostas incorretas</h2></span>
+                <input id="respostaIncorreta1${i + 1}" type="text" placeholder="Resposta incorreta 1">
+                <input id="urlRespostaIncorreta1${i + 1}" type="text" placeholder="URL da imagem 1">
+                <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 2">
+                <input id="urlRespostaIncorreta2${i + 1}" type="text" placeholder="URL da imagem 2">
+                <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 3">
+                <input id="urlRespostaIncorreta3${i + 1}" type="text" placeholder="URL da imagem 3">
+            </div>
+        </article>
+        `;
         if (i === 0) {
             perguntasHTML.querySelector("article:last-child img").classList.add("escondido");
             perguntasHTML.querySelector("article:last-child div:last-child").classList.add("pergunta-selecionada");
@@ -188,6 +202,8 @@ function validarInfoBasica() {
     if (tituloCriacaoQuizz.length < 20 || tituloCriacaoQuizz.length > 65 || parseInt(qtdDePerguntas) < 3 || parseInt(qtdDeNiveis) < 2 || (urlCriacaoQuizz.indexOf("https://") < 0 && urlCriacaoQuizz.indexOf("http://") < 0)) {
         return false;
     } else {
+        meuQuizz.title = tituloCriacaoQuizz;
+        meuQuizz.image = urlCriacaoQuizz;
         return true;
     }
 }
@@ -212,9 +228,9 @@ function renderizarCriacaoNiveis() {
             <article>
                 <div>
                     <span><h2>Nível ${i + 1}</h2></span>
-                    <img class="escondido" onclick="editarNivel(this)" src="./media/edit.svg" alt="Editar nível">
+                    <img onclick="editarNivel(this)" src="./media/edit.svg" alt="Editar nível">
                 </div>
-                <div>
+                <div class="escondido">
                     <input id="tituloNivel${i + 1}" type="text" placeholder="Título do nível">
                     <input id="minAcertoNivel${i + 1}" type="text" placeholder="% de acerto mínima">
                     <input id="urlNivel${i + 1}" type="text" placeholder="URL da imagem do nível">
@@ -231,56 +247,84 @@ function renderizarCriacaoNiveis() {
 
 function validarCriacaoPerguntas() {
     for (let i=0;i<qtdPerguntas;i++){
-        console.log(i)
-        try {
-        let textoPergunta = document.getElementById(`textoPergunta${i}`).value;
-        let corPergunta = document.getElementById(`corPergunta${i}`).value;
-        let respostaCorreta = document.getElementById(`respostaCorreta${i}`).value;
-        let urlRespostaCorreta = document.getElementById(`urlRespostaCorreta${i}`).value;
-        let respostaIncorreta1 = document.getElementById(`respostaIncorreta1${i}`).value;
-        let urlRespostaIncorreta1 = document.getElementById(`urlRespostaIncorreta1${i}`).value;
-        let respostaIncorreta2 = document.getElementById(`respostaIncorreta2${i}`).value;
-        let urlRespostaIncorreta2 = document.getElementById(`urlRespostaIncorreta2${i}`).value;
-        let respostaIncorreta3 = document.getElementById(`respostaIncorreta3${i}`).value;
-        let urlRespostaIncorreta3 = document.getElementById(`urlRespostaIncorreta3${i}`).value;
-        } catch {
-            let respostaIncorreta2 = '';
-            let urlRespostaIncorreta2 = '';
-            let respostaIncorreta3 = '';
-            let urlRespostaIncorreta3 = '';
-            return false;
-        }
-        console.log(textoPergunta.length)
-        console.log(corPergunta)
-        console.log(respostaCorreta.length)
-        console.log(urlRespostaCorreta)
-        console.log(respostaIncorreta1.length)
-        console.log(urlRespostaIncorreta1)
-        console.log(respostaIncorreta2.length)
-        console.log(urlRespostaIncorreta2)
-        console.log(respostaIncorreta3.length)
-        console.log(urlRespostaIncorreta3)
+        console.log(i+1)
+        let textoPergunta = document.getElementById(`textoPergunta${i+1}`).value;
+        let corPergunta = document.getElementById(`corPergunta${i+1}`).value;
+        let respostaCorreta = document.getElementById(`respostaCorreta${i+1}`).value;
+        let urlRespostaCorreta = document.getElementById(`urlRespostaCorreta${i+1}`).value;
+        let respostaIncorreta1 = document.getElementById(`respostaIncorreta1${i+1}`).value;
+        let urlRespostaIncorreta1 = document.getElementById(`urlRespostaIncorreta1${i+1}`).value;
+        let respostaIncorreta2;
+        let urlRespostaIncorreta2;
+        let respostaIncorreta3;
+        let urlRespostaIncorreta3;
 
-        if (textoPergunta.length < 20 || corPergunta.length != 7 || corPergunta.indexOf("#")<0 || respostaCorreta.length==0 || urlRespostaCorreta.indexOf("https://") < 0 || urlRespostaCorreta.indexOf("http://") < 0 || respostaIncorreta1.length==0 || urlRespostaIncorreta1.indexOf("https://") < 0 || urlRespostaIncorreta1.indexOf("http://") < 0) {
+        try {
+        respostaIncorreta2 = document.getElementById(`respostaIncorreta2${i+1}`).value;
+        urlRespostaIncorreta2 = document.getElementById(`urlRespostaIncorreta2${i+1}`).value;
+        respostaIncorreta3 = document.getElementById(`respostaIncorreta3${i+1}`).value;
+        urlRespostaIncorreta3 = document.getElementById(`urlRespostaIncorreta3${i+1}`).value;
+        } catch {
+            respostaIncorreta2 = '';
+            urlRespostaIncorreta2 = '';
+            respostaIncorreta3 = '';
+            urlRespostaIncorreta3 = '';
+        }
+
+        if (textoPergunta.length < 20 || corPergunta.length != 7 || corPergunta.indexOf("#")<0 || respostaCorreta.length==0 || (urlRespostaCorreta.indexOf("https://") < 0 && urlRespostaCorreta.indexOf("http://") < 0) || respostaIncorreta1.length==0 || (urlRespostaIncorreta1.indexOf("https://") < 0 && urlRespostaIncorreta1.indexOf("http://") < 0)) {
             return false;
-        } else if (respostaIncorreta2.length>0 && (urlRespostaIncorreta2.indexOf("https://") < 0 || urlRespostaIncorreta2.indexOf("http://") < 0)) {
+        } else if (respostaIncorreta2.length>0 && (urlRespostaIncorreta2.indexOf("https://") < 0 && urlRespostaIncorreta2.indexOf("http://") < 0)) {
             return false;
-        } else if (respostaIncorreta3.length>0 && (urlRespostaIncorreta3.indexOf("https://") < 0 || urlRespostaIncorreta3.indexOf("http://") < 0)) {
+        } else if (respostaIncorreta3.length>0 && (urlRespostaIncorreta3.indexOf("https://") < 0 && urlRespostaIncorreta3.indexOf("http://") < 0)) {
             return false;
         } else {
+            minhaPergunta.title = textoPergunta;
+            minhaPergunta.color = corPergunta;
+            minhaPergunta.answers[0].text = respostaCorreta;
+            minhaPergunta.answers[0].image = urlRespostaCorreta;
+            minhaPergunta.answers[0].isCorrectAnswer = true;
+            minhaPergunta.answers[1].text = respostaIncorreta1;
+            minhaPergunta.answers[1].image = urlRespostaIncorreta1;
+            minhaPergunta.answers[1].isCorrectAnswer = false;
+            let j=2;
+            if (respostaIncorreta2!='') {
+                minhaPergunta.answers[j].text = respostaIncorreta2;
+                minhaPergunta.answers[j].image = urlRespostaIncorreta2;
+                minhaPergunta.answers[j].isCorrectAnswer = false;
+                j++;
+            }
+            if (respostaIncorreta3!='') {
+                minhaPergunta.answers[j].text = respostaIncorreta3;
+                minhaPergunta.answers[j].image = urlRespostaIncorreta3;
+                minhaPergunta.answers[j].isCorrectAnswer = false;
+            }
+            meuQuizz.questions.push(minhaPergunta);
             return true;
         }
     }
 }
 
+let meuQuizzSerializado;
 function finalizarCriacaoQuizz() {
     if (validarCriacaoNiveis()) {
-        alert("Preencha os campos corretamente para continuar criando o seu Quizz.\n\nTítulo do nível: mínimo de 10 caracteres\n% de acerto mínima: um número entre 0 e 100\nURL da imagem do nível: deve ter formato de URL\nDescrição do nível: mínimo de 30 caracteres\nÉ obrigatório existir pelo menos 1 nível cuja % de acerto mínima seja 0%")
-    } else {
         document.querySelector(".criacao-niveis").classList.add("escondido");
         document.querySelector(".finalizar-criacao-quiz").classList.remove("escondido");
         qtdPerguntas = '';
         qtdNiveis = '';
+        document.querySelector(".finalizar-criacao-quiz .imagem-meu-quizz").innerHTML = `<img src="${meuQuizz.image}" alt="Imagem do meu quizz">`;
+        
+        meusQuizzes.push(meuQuizz);
+        meuQuizzSerializado = JSON.stringify(meuQuizz);
+        const meuQuizzPromise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",meuQuizz);
+        meuQuizzPromise.then((response) => {
+            salvarNoLocalStorage();
+        });
+        meuQuizzPromise.catch((error) => {
+            alert("Ocorreu um problema e seu Quizz não foi salvo!");
+            renderizarTodosOsQuizzes();
+        })
+    } else {
+        alert("Preencha os campos corretamente para continuar criando o seu Quizz.\n\nTítulo do nível: mínimo de 10 caracteres\n% de acerto mínima: um número entre 0 e 100\nURL da imagem do nível: deve ter formato de URL\nDescrição do nível: mínimo de 30 caracteres\nÉ obrigatório existir pelo menos 1 nível cuja % de acerto mínima seja 0%");
     }
 }
 
@@ -288,44 +332,58 @@ function validarCriacaoNiveis() {
     let validado=false;
     let minAcertoNivel0=0;
     for (let i=0;i<qtdNiveis;i++){
-        let tituloNivel = document.getElementById(`tituloNivel${i}`).value;
-        let minAcertoNivel = document.getElementById(`minAcertoNivel${i}`).value;
-        let urlNivel = document.getElementById(`urlNivel${i}`).value;
-        let descricaoNivel = document.getElementById(`descricaoNivel${i}`).value;
-        console.log(tituloNivel.length)
-        console.log(minAcertoNivel)
-        console.log(urlNivel)
-        console.log(descricaoNivel.length)
-
-        if (tituloNivel.length < 10 || parseInt(minAcertoNivel)>=0 || parseInt(minAcertoNivel)<=100 || respostaCorreta.length==0 || (urlNivel.indexOf("https://") < 0 && urlNivel.indexOf("http://")) || descricaoNivel.length < 30) {
+        let tituloNivel = document.getElementById(`tituloNivel${i+1}`).value;
+        let minAcertoNivel = document.getElementById(`minAcertoNivel${i+1}`).value;
+        let urlNivel = document.getElementById(`urlNivel${i+1}`).value;
+        let descricaoNivel = document.getElementById(`descricaoNivel${i+1}`).value;
+        
+        if (tituloNivel.length < 10 || parseInt(minAcertoNivel)<0 || parseInt(minAcertoNivel)>100 || (urlNivel.indexOf("https://") < 0 && urlNivel.indexOf("http://") < 0) || descricaoNivel.length < 30) {
             validado = false;
         } else {
+            meuNivel.title = tituloNivel;
+            meuNivel.minValue = parseInt(minAcertoNivel);
+            meuNivel.image = urlNivel;
+            meuNivel.text = descricaoNivel;
+            meuQuizz.levels.push(meuNivel);
             validado = true;
         }
-        if (`minAcertoNivel${i}`==0) {minAcertoNivel0+=1};
+        if (parseInt(minAcertoNivel)===0) {minAcertoNivel0+=1};
+        console.log(minAcertoNivel)
+        console.log(minAcertoNivel0)
     }
-    if (minAcertoNivel0>0) {validado=true};
+    if (minAcertoNivel0>0 && validado) {
+        validado = true;
+    } else {
+        meuQuizz.levels = [];
+        validado = false;
+    };
     return validado;
 }
 
+function salvarNoLocalStorage() {
+    localStorage.setItem((meusQuizzes.length - 1).toString(),meuQuizzSerializado);
+}
+
 function editarPergunta(novaPerguntaSelecionada) {
-    novaPerguntaSelecionada.parentNode.parentNode.querySelector("div:last-child").classList.add("pergunta-selecionada pergunta-atual")
     document.querySelectorAll(".criacao-perguntas article>div:last-child").forEach((elemento) => {
-        if (elemento.classList.contains("pergunta-selecionada") && !elemento.classList.contains("pergunta-atual")) {
-            elemento.classList.toggle("escondido");
-            elemento.parentNode.querySelector("img").classList.toggle("escondido");
+        if (!elemento.classList.contains("escondido")) {
+            elemento.classList.add("escondido");
+            elemento.parentNode.querySelector("img").classList.remove("escondido");
         }
     })
+    novaPerguntaSelecionada.classList.add("escondido");
+    novaPerguntaSelecionada.parentNode.parentNode.querySelector("div:last-child").classList.remove("escondido");
 }
 
 function editarNivel(novoNivelSelecionado) {
-    novoNivelSelecionado.parentNode.parentNode.querySelector("div:last-child").classList.add("nivel-selecionado nivel-atual")
     document.querySelectorAll(".criacao-niveis article>div:last-child").forEach((elemento) => {
-        if (elemento.classList.contains("nivel-selecionado") && !elemento.classList.contains("nivel-atual")) {
-            elemento.classList.toggle("escondido");
-            elemento.parentNode.querySelector("img").classList.toggle("escondido");
+        if (!elemento.classList.contains("escondido")) {
+            elemento.classList.add("escondido");
+            elemento.parentNode.querySelector("img").classList.remove("escondido");
         }
     })
+    novoNivelSelecionado.classList.add("escondido");
+    novoNivelSelecionado.parentNode.parentNode.querySelector("div:last-child").classList.remove("escondido");
 }
 
 function voltarParaAHome() {
