@@ -127,22 +127,29 @@ function reiniciarQuizz() {
 }
 
 let meuQuizz = {
-	title: "Título do quizz",
-	image: "https://http.cat/411.jpg",
+	title: "",
+	image: "",
 	questions: [],
 	levels: []
 }
 let minhaPergunta = {
-    title: "Título da pergunta 1",
-    color: "#123456",
+    title: "",
+    color: "",
     answers: []
 }
+let minhaResposta = {
+    text: "",
+    image: "",
+    isCorrectAnswer: true
+}
 let meuNivel = {
-    title: "Título do nível 1",
-    image: "https://http.cat/411.jpg",
-    text: "Descrição do nível 1",
+    title: "",
+    image: "",
+    text: "",
     minValue: 0
 }
+let qtdPerguntas;
+let qtdNiveis;
 function criarInfoBasicaQuizz() {
     document.querySelector("main").classList.add("escondido");
     document.querySelector(".criacao-de-quiz").classList.remove("escondido");
@@ -158,7 +165,6 @@ function criarPerguntasQuizz() {
     }
 }
 
-let qtdPerguntas;
 function renderizarCriacaoPerguntas() {
     qtdPerguntas = parseInt(document.querySelector(".criacao-de-quiz .info-basica .qtd-de-perguntas").value);
     document.querySelector(".criacao-de-quiz .criacao-perguntas .inputs").innerHTML = '';
@@ -181,7 +187,7 @@ function renderizarCriacaoPerguntas() {
                 <input id="urlRespostaIncorreta1${i + 1}" type="text" placeholder="URL da imagem 1">
                 <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 2">
                 <input id="urlRespostaIncorreta2${i + 1}" type="text" placeholder="URL da imagem 2">
-                <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 3">
+                <input id="respostaIncorreta3${i + 1}" type="text" placeholder="Resposta incorreta 3">
                 <input id="urlRespostaIncorreta3${i + 1}" type="text" placeholder="URL da imagem 3">
             </div>
         </article>
@@ -197,9 +203,10 @@ function renderizarCriacaoPerguntas() {
 function validarInfoBasica() {
     let tituloCriacaoQuizz = document.querySelector(".criacao-de-quiz .info-basica .titulo-criacao-quiz").value;
     let urlCriacaoQuizz = document.querySelector(".criacao-de-quiz .info-basica .url-criacao-quiz").value;
-    let qtdDePerguntas = document.querySelector(".criacao-de-quiz .info-basica .qtd-de-perguntas").value;
-    let qtdDeNiveis = document.querySelector(".criacao-de-quiz .info-basica .qtd-de-niveis").value;
-    if (tituloCriacaoQuizz.length < 20 || tituloCriacaoQuizz.length > 65 || parseInt(qtdDePerguntas) < 3 || parseInt(qtdDeNiveis) < 2 || (urlCriacaoQuizz.indexOf("https://") < 0 && urlCriacaoQuizz.indexOf("http://") < 0)) {
+    qtdPerguntas = document.querySelector(".criacao-de-quiz .info-basica .qtd-de-perguntas").value;
+    qtdNiveis = document.querySelector(".criacao-de-quiz .info-basica .qtd-de-niveis").value;
+    
+    if (tituloCriacaoQuizz.length < 20 || tituloCriacaoQuizz.length > 65 || parseInt(qtdPerguntas) < 3 || parseInt(qtdNiveis) < 2 || (urlCriacaoQuizz.indexOf("https://") < 0 && urlCriacaoQuizz.indexOf("http://") < 0)) {
         return false;
     } else {
         meuQuizz.title = tituloCriacaoQuizz;
@@ -218,7 +225,6 @@ function criarNiveisQuizz() {
     }
 }
 
-let qtdNiveis;
 function renderizarCriacaoNiveis() {
     qtdNiveis = parseInt(document.querySelector(".criacao-de-quiz .info-basica .qtd-de-niveis").value);
     document.querySelector(".criacao-de-quiz .criacao-niveis .inputs").innerHTML = '';
@@ -247,7 +253,6 @@ function renderizarCriacaoNiveis() {
 
 function validarCriacaoPerguntas() {
     for (let i=0;i<qtdPerguntas;i++){
-        console.log(i+1)
         let textoPergunta = document.getElementById(`textoPergunta${i+1}`).value;
         let corPergunta = document.getElementById(`corPergunta${i+1}`).value;
         let respostaCorreta = document.getElementById(`respostaCorreta${i+1}`).value;
@@ -262,11 +267,15 @@ function validarCriacaoPerguntas() {
         try {
         respostaIncorreta2 = document.getElementById(`respostaIncorreta2${i+1}`).value;
         urlRespostaIncorreta2 = document.getElementById(`urlRespostaIncorreta2${i+1}`).value;
-        respostaIncorreta3 = document.getElementById(`respostaIncorreta3${i+1}`).value;
-        urlRespostaIncorreta3 = document.getElementById(`urlRespostaIncorreta3${i+1}`).value;
         } catch {
             respostaIncorreta2 = '';
             urlRespostaIncorreta2 = '';
+        }
+
+        try {
+        respostaIncorreta3 = document.getElementById(`respostaIncorreta3${i+1}`).value;
+        urlRespostaIncorreta3 = document.getElementById(`urlRespostaIncorreta3${i+1}`).value;
+        } catch {
             respostaIncorreta3 = '';
             urlRespostaIncorreta3 = '';
         }
@@ -278,33 +287,45 @@ function validarCriacaoPerguntas() {
         } else if (respostaIncorreta3.length>0 && (urlRespostaIncorreta3.indexOf("https://") < 0 && urlRespostaIncorreta3.indexOf("http://") < 0)) {
             return false;
         } else {
+            minhaPergunta.answers = [];
             minhaPergunta.title = textoPergunta;
             minhaPergunta.color = corPergunta;
-            minhaPergunta.answers[0].text = respostaCorreta;
-            minhaPergunta.answers[0].image = urlRespostaCorreta;
-            minhaPergunta.answers[0].isCorrectAnswer = true;
-            minhaPergunta.answers[1].text = respostaIncorreta1;
-            minhaPergunta.answers[1].image = urlRespostaIncorreta1;
-            minhaPergunta.answers[1].isCorrectAnswer = false;
-            let j=2;
+            minhaResposta = {
+                text: respostaCorreta,
+                image: urlRespostaCorreta,
+                isCorrectAnswer: true
+            }
+            minhaPergunta.answers.push(JSON.parse(JSON.stringify(minhaResposta)));
+            minhaResposta = {
+                text: respostaIncorreta1,
+                image: urlRespostaIncorreta1,
+                isCorrectAnswer: false
+            }
+            minhaPergunta.answers.push(JSON.parse(JSON.stringify(minhaResposta)));
             if (respostaIncorreta2!='') {
-                minhaPergunta.answers[j].text = respostaIncorreta2;
-                minhaPergunta.answers[j].image = urlRespostaIncorreta2;
-                minhaPergunta.answers[j].isCorrectAnswer = false;
-                j++;
+                minhaResposta = {
+                    text: respostaIncorreta2,
+                    image: urlRespostaIncorreta2,
+                    isCorrectAnswer: false
+                }
+                minhaPergunta.answers.push(JSON.parse(JSON.stringify(minhaResposta)));
             }
             if (respostaIncorreta3!='') {
-                minhaPergunta.answers[j].text = respostaIncorreta3;
-                minhaPergunta.answers[j].image = urlRespostaIncorreta3;
-                minhaPergunta.answers[j].isCorrectAnswer = false;
+                minhaResposta = {
+                    text: respostaIncorreta3,
+                    image: urlRespostaIncorreta3,
+                    isCorrectAnswer: false
+                }
+                minhaPergunta.answers.push(JSON.parse(JSON.stringify(minhaResposta)));
             }
-            meuQuizz.questions.push(minhaPergunta);
-            return true;
+            meuQuizz.questions.push(JSON.parse(JSON.stringify(minhaPergunta)));
         }
     }
+    return true;
 }
 
 let meuQuizzSerializado;
+let meusQuizzesIds = [];
 function finalizarCriacaoQuizz() {
     if (validarCriacaoNiveis()) {
         document.querySelector(".criacao-niveis").classList.add("escondido");
@@ -313,11 +334,12 @@ function finalizarCriacaoQuizz() {
         qtdNiveis = '';
         document.querySelector(".finalizar-criacao-quiz .imagem-meu-quizz").innerHTML = `<img src="${meuQuizz.image}" alt="Imagem do meu quizz">`;
         
-        meusQuizzes.push(meuQuizz);
+        meusQuizzes.push(JSON.parse(JSON.stringify(meuQuizz)));
         meuQuizzSerializado = JSON.stringify(meuQuizz);
         const meuQuizzPromise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",meuQuizz);
         meuQuizzPromise.then((response) => {
             salvarNoLocalStorage();
+            meusQuizzesIds.push(response.data.id);
         });
         meuQuizzPromise.catch((error) => {
             alert("Ocorreu um problema e seu Quizz não foi salvo!");
@@ -344,12 +366,10 @@ function validarCriacaoNiveis() {
             meuNivel.minValue = parseInt(minAcertoNivel);
             meuNivel.image = urlNivel;
             meuNivel.text = descricaoNivel;
-            meuQuizz.levels.push(meuNivel);
+            meuQuizz.levels.push(JSON.parse(JSON.stringify(meuNivel)));
             validado = true;
         }
         if (parseInt(minAcertoNivel)===0) {minAcertoNivel0+=1};
-        console.log(minAcertoNivel)
-        console.log(minAcertoNivel0)
     }
     if (minAcertoNivel0>0 && validado) {
         validado = true;
