@@ -98,8 +98,8 @@ function resultadoDoQuizz(){
             }
         }
 
-        tela2Resultado.innerHTML +=
-        `<div class="pergunta" id="resultadoQuizz" style="background-color: red">
+        tela2Resultado.innerHTML =
+        `<div class="pergunta" id="resultadoQuizz" style="background-color: #EC362D">
             <span><h3>${percentagem}% de acerto: ${quizzes[numeroDoQuizz].levels[indiceN].title}</h3></span>
         </div>
         <div class="conteudo" id="conteudoResultado">
