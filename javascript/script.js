@@ -12,7 +12,7 @@ function renderizarTodosOsQuizzes(response) {
     quizzes = response.data
     for (let i = 0; i < quizzes.length; i++) {
         todosOsQuizzes.innerHTML +=
-            `<div class="quizz" id="quizz${i}" onclick="mostrarTela2(this)">
+            `<div data-identifier="quizz-card" class="quizz" id="quizz${i}" onclick="mostrarTela2(this)">
             <h2>${quizzes[i].title}</h2>
         </div>`;
 
@@ -33,7 +33,7 @@ function mostrarTela2(quizzSelecionado) {
     <div>`;
     for (let i = 0; i < quizzes[numeroDoQuizz].questions.length; i++) {
         tela2.innerHTML +=
-            `<div class="pergunta" id="pergunta${i}" style="background-color: ${quizzes[numeroDoQuizz].questions[i].color}">
+            `<div data-identifier="question" class="pergunta" id="pergunta${i}" style="background-color: ${quizzes[numeroDoQuizz].questions[i].color}">
             <span><h3>${quizzes[numeroDoQuizz].questions[i].title}</h3></span>
         </div>
         <div class="conteudo" id="conteudo${i}"> 
@@ -41,7 +41,7 @@ function mostrarTela2(quizzSelecionado) {
 
         for (let j = 0; j < quizzes[numeroDoQuizz].questions[i].answers.length; j++) {
             document.querySelector(`#conteudo${i}`).innerHTML +=
-                `<div class="perguntas" style="order: ${Math.floor(Math.random() * 11)}" onclick="selecionarResposta(this)" data-id="${quizzes[numeroDoQuizz].questions[i].answers[j].isCorrectAnswer}">
+                `<div data-identifier="answer" class="perguntas" style="order: ${Math.floor(Math.random() * 11)}" onclick="selecionarResposta(this)" data-id="${quizzes[numeroDoQuizz].questions[i].answers[j].isCorrectAnswer}">
                 <img src="${quizzes[numeroDoQuizz].questions[i].answers[j].image}"/>
                 <p>
                 ${quizzes[numeroDoQuizz].questions[i].answers[j].text}
@@ -99,7 +99,7 @@ function resultadoDoQuizz(){
         }
 
         tela2Resultado.innerHTML =
-        `<div class="pergunta" id="resultadoQuizz" style="background-color: #EC362D">
+        `<div data-identifier="quizz-result" class="pergunta" id="resultadoQuizz" style="background-color: #EC362D">
             <span><h3>${percentagem}% de acerto: ${quizzes[numeroDoQuizz].levels[indiceN].title}</h3></span>
         </div>
         <div class="conteudo" id="conteudoResultado">
