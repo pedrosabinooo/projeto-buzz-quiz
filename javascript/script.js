@@ -125,7 +125,19 @@ function reiniciarQuizz() {
     window.scrollTo(0, 0);
     mostrarTela2(quizzAtual);
 }
-
+function acessarQuizz(){
+    acertos=0;
+    tentativas=0;
+    const quizzCriado=document.querySelector('.seus-quizzes .conteudo').lastChild;
+    mostrarTela2(quizzCriado);
+}
+function botaoCriarQuizz(){
+    const conteudoSeusQuizzes = document.querySelector('.seus-quizzes .conteudo')
+    if(conteudoSeusQuizzes.innerHTML != ""){
+        document.querySelector(".todos-os-quizzes .ion-icon").classList.remove("escondido");
+        document.querySelector(".criar-quizz").classList.add("escondido");
+    }
+}
 let meuQuizz = {
 	title: "Título do quizz",
 	image: "https://http.cat/411.jpg",
