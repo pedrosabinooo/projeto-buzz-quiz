@@ -8,6 +8,8 @@ const todosOsQuizzes = document.querySelector(".todos-os-quizzes .conteudo");
 const conteudoSeusQuizzes = document.querySelector('.seus-quizzes .conteudo');
 
 Renderizar();
+setTimeout(botaoCriarQuizz, 200); 
+
 function Renderizar(){
     const quizPromise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
     quizPromise.then(renderizarTodosOsQuizzes);
@@ -364,9 +366,11 @@ function validarCriacaoPerguntas() {
     return true;
 }
 
-let meuQuizzSerializado;
-let meusQuizzesIds = [];
+let meusQuizzesIds = JSON.parse(localStorage.getItem('meusQuizzesIds')) || [];
+let meusQuizzesIdsSerializado;
+
 function finalizarCriacaoQuizz() {
+    
     if (validarCriacaoNiveis()) {
         document.querySelector(".criacao-niveis").classList.add("escondido");
         document.querySelector(".finalizar-criacao-quiz").classList.remove("escondido");
@@ -374,12 +378,11 @@ function finalizarCriacaoQuizz() {
         qtdNiveis = '';
         document.querySelector(".finalizar-criacao-quiz .imagem-meu-quizz").innerHTML = `<img src="${meuQuizz.image}" alt="Imagem do meu quizz">`;
         
-        meusQuizzes.push(JSON.parse(JSON.stringify(meuQuizz)));
-        meuQuizzSerializado = JSON.stringify(meuQuizz);
         const meuQuizzPromise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",meuQuizz);
         meuQuizzPromise.then((response) => {
-            salvarNoLocalStorage();
             meusQuizzesIds.push(response.data.id);
+            meusQuizzesIdsSerializado = JSON.stringify(meusQuizzesIds);
+            salvarNoLocalStorage();
         });
         meuQuizzPromise.catch((error) => {
             alert("Ocorreu um problema e seu Quizz não foi salvo!");
@@ -421,7 +424,7 @@ function validarCriacaoNiveis() {
 }
 
 function salvarNoLocalStorage() {
-    localStorage.setItem((meusQuizzes.length - 1).toString(),meuQuizzSerializado);
+    localStorage.setItem('meusQuizzesIds',meusQuizzesIdsSerializado);
 }
 
 function editarPergunta(novaPerguntaSelecionada) {
