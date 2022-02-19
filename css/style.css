@@ -13,10 +13,6 @@ body{
     background-color: #FAFAFA;
 }
 
-.escondido{
-    display: none;
-}
-
 header{
     z-index: 10;
     height: 69px;
@@ -214,4 +210,8 @@ section h1{
     font-weight: 400;
     color: #818181;
     margin-bottom: 60px;
+}
+
+.escondido{
+    display: none;
 }

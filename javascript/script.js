@@ -4,19 +4,39 @@ let quizzAtual;
 let acertos = 0;
 let tentativas=0;
 const tela2 = document.querySelector('.tela2');
-const todosOsQuizzes = document.querySelector(".todos-os-quizzes .conteudo")
-const quizPromise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
-quizPromise.then(renderizarTodosOsQuizzes);
+const todosOsQuizzes = document.querySelector(".todos-os-quizzes .conteudo");
+const conteudoSeusQuizzes = document.querySelector('.seus-quizzes .conteudo');
+
+Renderizar();
+function Renderizar(){
+    const quizPromise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
+    quizPromise.then(renderizarTodosOsQuizzes);
+}
 
 function renderizarTodosOsQuizzes(response) {
     quizzes = response.data
+    todosOsQuizzes.innerHTML = ""
+    conteudoSeusQuizzes.innerHTML = ""
     for (let i = 0; i < quizzes.length; i++) {
-        todosOsQuizzes.innerHTML +=
-            `<div data-identifier="quizz-card" class="quizz" id="quizz${i}" onclick="mostrarTela2(this)">
-            <h2>${quizzes[i].title}</h2>
-        </div>`;
 
-        document.getElementById("quizz" + i).style.backgroundImage = `linear-gradient(to top, rgba(0, 0, 0, 0.85)25%, transparent 75%), url("${quizzes[i].image}")`;
+        if(meusQuizzesIds.includes(quizzes[i].id)==true){
+
+            conteudoSeusQuizzes.innerHTML +=
+                `<div data-identifier="quizz-card" class="quizz" id="quizz${i}" onclick="mostrarTela2(this)">
+                    <h2>${quizzes[i].title}</h2>
+                </div>`;
+            document.getElementById("quizz" + i).style.backgroundImage = `linear-gradient(to top, rgba(0, 0, 0, 0.85)25%, transparent 75%), url("${quizzes[i].image}")`;
+
+        }else if(meusQuizzesIds.includes(quizzes[i].id) !==true){
+
+            todosOsQuizzes.innerHTML +=
+                `<div data-identifier="quizz-card" class="quizz" id="quizz${i}" onclick="mostrarTela2(this)">
+                    <h2>${quizzes[i].title}</h2>
+                </div>`;
+            document.getElementById("quizz" + i).style.backgroundImage = `linear-gradient(to top, rgba(0, 0, 0, 0.85)25%, transparent 75%), url("${quizzes[i].image}")`;
+
+        }
+
     }
 };
 
@@ -126,15 +146,23 @@ function reiniciarQuizz() {
     mostrarTela2(quizzAtual);
 }
 function acessarQuizz(){
-    acertos=0;
-    tentativas=0;
-    const quizzCriado=document.querySelector('.seus-quizzes .conteudo').lastChild;
-    mostrarTela2(quizzCriado);
+    Renderizar();
+    setTimeout(()=> {
+        botaoCriarQuizz();
+        voltarParaAHome();
+        mostrarTela2(document.querySelector('.seus-quizzes .conteudo').firstChild);
+    },500)
+}
+function renderizarEVoltarParaAHome(){
+    Renderizar();
+    setTimeout(()=> {
+        botaoCriarQuizz();
+        voltarParaAHome();
+    },500)
 }
 function botaoCriarQuizz(){
-    const conteudoSeusQuizzes = document.querySelector('.seus-quizzes .conteudo')
     if(conteudoSeusQuizzes.innerHTML != ""){
-        document.querySelector(".todos-os-quizzes .ion-icon").classList.remove("escondido");
+        document.querySelector(".todos-os-quizzes ion-icon").classList.remove("escondido");
         document.querySelector(".criar-quizz").classList.add("escondido");
     }
 }
@@ -419,6 +447,7 @@ function editarNivel(novoNivelSelecionado) {
 }
 
 function voltarParaAHome() {
+    botaoCriarQuizz();
     document.querySelector(".responder-quizz").classList.add("escondido");
     document.querySelector(".criacao-de-quiz").classList.add("escondido");
     document.querySelector("main").classList.remove("escondido");
