@@ -15,6 +15,10 @@
     justify-content: space-between;
 }
 
+.criacao-de-quiz article>div:first-child img:hover{
+    cursor: pointer;
+}
+
 .criacao-de-quiz h1{
     width: 100%;
     padding-bottom: 29px;
@@ -40,7 +44,7 @@
 .criacao-de-quiz article, .info-basica>.inputs{
     background-color: #FFFFFF;
     width: 100%;
-    padding: 21px 0 24px 0;
+    padding: 21px 18px 24px 18px;
     margin-bottom: 24px;
 }
 
@@ -80,7 +84,7 @@
     font-size: 18px;
 }
 
-.criacao-de-quiz button:hover, .criacao-de-quiz h3:hover{
+.criacao-de-quiz h3:hover{
     cursor: pointer;
 }
 
@@ -99,6 +103,7 @@
     padding: 18px;
     color: #FFFFFF;
     width: 100%;
+    max-width: 500px;
     border-radius: 5px;
     height: 181px;
 }

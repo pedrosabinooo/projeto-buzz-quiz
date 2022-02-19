@@ -11,6 +11,8 @@
     display: none;
 }
 
+button:hover {cursor: pointer;}
+
 body{
     display: flex;
     justify-content: center;
