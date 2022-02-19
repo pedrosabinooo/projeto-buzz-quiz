@@ -50,9 +50,10 @@ function mostrarTela2(quizzSelecionado) {
     document.querySelector('main').classList.add('escondido');
     tela2.innerHTML =
         `<div class="quizz-banner">
-        <img src="${quizzes[numeroDoQuizz].image}"/>
-        <h2>${quizzes[numeroDoQuizz].title}</h2>
-    <div>`;
+            <img src="${quizzes[numeroDoQuizz].image}"/>
+            <h2>${quizzes[numeroDoQuizz].title}</h2>
+        <div>
+    `;
     for (let i = 0; i < quizzes[numeroDoQuizz].questions.length; i++) {
         tela2.innerHTML +=
             `<div data-identifier="question" class="pergunta" id="pergunta${i}" style="background-color: ${quizzes[numeroDoQuizz].questions[i].color}">
@@ -216,21 +217,21 @@ function renderizarCriacaoPerguntas() {
         <article>
             <div>
                 <span><h2>Pergunta ${i + 1}</h2></span>
-                <img onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta">
+                <img onclick="editarPergunta(this)" src="./media/edit.svg" alt="Editar pergunta" data-identifier="expand">
             </div>
             <div class="escondido">
-                <input id="textoPergunta${i + 1}" type="text" placeholder="Texto da pergunta">
-                <input id="corPergunta${i + 1}" type="text" placeholder="Cor de fundo da pergunta">
+                <input id="textoPergunta${i + 1}" type="text" placeholder="Texto da pergunta" data-identifier="question">
+                <input id="corPergunta${i + 1}" type="text" placeholder="Cor de fundo da pergunta" data-identifier="question">
                 <span><h2>Resposta correta</h2></span>
-                <input id="respostaCorreta${i + 1}" type="text" placeholder="Resposta correta">
-                <input id="urlRespostaCorreta${i + 1}" type="text" placeholder="URL da imagem">
+                <input id="respostaCorreta${i + 1}" type="text" placeholder="Resposta correta" data-identifier="question">
+                <input id="urlRespostaCorreta${i + 1}" type="text" placeholder="URL da imagem" data-identifier="question">
                 <span><h2>Respostas incorretas</h2></span>
-                <input id="respostaIncorreta1${i + 1}" type="text" placeholder="Resposta incorreta 1">
-                <input id="urlRespostaIncorreta1${i + 1}" type="text" placeholder="URL da imagem 1">
-                <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 2">
-                <input id="urlRespostaIncorreta2${i + 1}" type="text" placeholder="URL da imagem 2">
-                <input id="respostaIncorreta3${i + 1}" type="text" placeholder="Resposta incorreta 3">
-                <input id="urlRespostaIncorreta3${i + 1}" type="text" placeholder="URL da imagem 3">
+                <input id="respostaIncorreta1${i + 1}" type="text" placeholder="Resposta incorreta 1" data-identifier="question">
+                <input id="urlRespostaIncorreta1${i + 1}" type="text" placeholder="URL da imagem 1" data-identifier="question">
+                <input id="respostaIncorreta2${i + 1}" type="text" placeholder="Resposta incorreta 2" data-identifier="question">
+                <input id="urlRespostaIncorreta2${i + 1}" type="text" placeholder="URL da imagem 2" data-identifier="question">
+                <input id="respostaIncorreta3${i + 1}" type="text" placeholder="Resposta incorreta 3" data-identifier="question">
+                <input id="urlRespostaIncorreta3${i + 1}" type="text" placeholder="URL da imagem 3" data-identifier="question">
             </div>
         </article>
         `;
@@ -276,13 +277,13 @@ function renderizarCriacaoNiveis() {
             <article>
                 <div>
                     <span><h2>Nível ${i + 1}</h2></span>
-                    <img onclick="editarNivel(this)" src="./media/edit.svg" alt="Editar nível">
+                    <img onclick="editarNivel(this)" src="./media/edit.svg" alt="Editar nível" data-identifier="expand">
                 </div>
                 <div class="escondido">
-                    <input id="tituloNivel${i + 1}" type="text" placeholder="Título do nível">
-                    <input id="minAcertoNivel${i + 1}" type="text" placeholder="% de acerto mínima">
-                    <input id="urlNivel${i + 1}" type="text" placeholder="URL da imagem do nível">
-                    <textarea id="descricaoNivel${i + 1}" name="descrição" placeholder="Descrição do nível"></textarea>
+                    <input id="tituloNivel${i + 1}" type="text" placeholder="Título do nível" data-identifier="level">
+                    <input id="minAcertoNivel${i + 1}" type="text" placeholder="% de acerto mínima" data-identifier="level">
+                    <input id="urlNivel${i + 1}" type="text" placeholder="URL da imagem do nível" data-identifier="level">
+                    <textarea id="descricaoNivel${i + 1}" name="descrição" placeholder="Descrição do nível" data-identifier="level"></textarea>
                 </div>
             </article>
         `;
@@ -370,13 +371,13 @@ let meusQuizzesIds = JSON.parse(localStorage.getItem('meusQuizzesIds')) || [];
 let meusQuizzesIdsSerializado;
 
 function finalizarCriacaoQuizz() {
-    
     if (validarCriacaoNiveis()) {
         document.querySelector(".criacao-niveis").classList.add("escondido");
         document.querySelector(".finalizar-criacao-quiz").classList.remove("escondido");
         qtdPerguntas = '';
         qtdNiveis = '';
-        document.querySelector(".finalizar-criacao-quiz .imagem-meu-quizz").innerHTML = `<img src="${meuQuizz.image}" alt="Imagem do meu quizz">`;
+        document.querySelector(".finalizar-criacao-quiz .imagem-meu-quizz").innerHTML = meuQuizz.title;
+        document.querySelector(".finalizar-criacao-quiz .imagem-meu-quizz").style.backgroundImage = `linear-gradient(to top, rgba(0, 0, 0, 0.85)25%, transparent 75%), url("${meuQuizz.image}")`;
         
         const meuQuizzPromise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",meuQuizz);
         meuQuizzPromise.then((response) => {
@@ -388,6 +389,12 @@ function finalizarCriacaoQuizz() {
             alert("Ocorreu um problema e seu Quizz não foi salvo!");
             renderizarTodosOsQuizzes();
         })
+        meuQuizz = {
+            title: "",
+            image: "",
+            questions: [],
+            levels: []
+        }
     } else {
         alert("Preencha os campos corretamente para continuar criando o seu Quizz.\n\nTítulo do nível: mínimo de 10 caracteres\n% de acerto mínima: um número entre 0 e 100\nURL da imagem do nível: deve ter formato de URL\nDescrição do nível: mínimo de 30 caracteres\nÉ obrigatório existir pelo menos 1 nível cuja % de acerto mínima seja 0%");
     }

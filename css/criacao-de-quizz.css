@@ -1,4 +1,5 @@
 .criacao-de-quiz{
+    width: 100%;
     max-width: 600px;
     margin: 100px 0;
     display: flex;
@@ -6,6 +7,7 @@
     align-items: center;
     text-align: center;
     font-family: 'Roboto', sans-serif;
+    padding: 0 18px;
 }
 
 .criacao-de-quiz article>div:first-child{
@@ -38,7 +40,7 @@
 .criacao-de-quiz article, .info-basica>.inputs{
     background-color: #FFFFFF;
     width: 100%;
-    padding: 21px 18px 24px 18px;
+    padding: 21px 0 24px 0;
     margin-bottom: 24px;
 }
 
@@ -78,8 +80,25 @@
     font-size: 18px;
 }
 
+.criacao-de-quiz button:hover, .criacao-de-quiz h3:hover{
+    cursor: pointer;
+}
+
 .finalizar-criacao-quiz {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+}
+
+.finalizar-criacao-quiz .imagem-meu-quizz {
+    font-size: 19px;
+    font-weight: normal;
+    display: flex;
+    align-items: flex-end;
+    padding: 18px;
+    color: #FFFFFF;
+    width: 100%;
+    border-radius: 5px;
+    height: 181px;
 }
