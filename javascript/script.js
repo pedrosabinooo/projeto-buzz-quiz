@@ -165,7 +165,7 @@ function renderizarEVoltarParaAHome(){
 }
 function botaoCriarQuizz(){
     if(conteudoSeusQuizzes.innerHTML != ""){
-        document.querySelector(".todos-os-quizzes ion-icon").classList.remove("escondido");
+        document.querySelector(".seus-quizzes").classList.remove("escondido");
         document.querySelector(".criar-quizz").classList.add("escondido");
     }
 }

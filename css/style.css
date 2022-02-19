@@ -43,6 +43,7 @@ main{
     margin: 100px 18px auto 18px;
     display: block;
     justify-content: center;
+    max-width: 1051px;
 }
 section h1{
     font-size: 20px;
@@ -67,7 +68,6 @@ section h1{
     height: 100%;
     font-size: 20px;
     color: #d5d5d5;
-    ;
 }
 .criar-quizz button{
     background-color: #FAFAFA;
@@ -82,29 +82,32 @@ section h1{
 .conteudo{
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    width: 100%;
     margin: auto;
     justify-content: space-around;
-    align-items: center;
 }
 .resultado img{
     max-width: 360px;
 }
 
-.todos-os-quizzes span{
+.todos-os-quizzes {
+    margin-top: 48px;
+}
+
+.todos-os-quizzes span {
     font-size: 20px;
     font-weight: 700;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
-.todos-os-quizzes ion-icon{
+.seus-quizzes ion-icon{
     font-size: 31px;
     color: #EC362D ;
 }
 .seus-quizzes span{
     font-size: 20px;
     font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .quizz{
     position: relative;
@@ -227,4 +230,11 @@ section h1{
 
 .escondido{
     display: none;
+}
+
+@media screen and (min-width: 1085px) {
+    .seus-quizzes>span:first-child {
+        justify-content: flex-start;
+        gap: 17px;
+    }
 }
